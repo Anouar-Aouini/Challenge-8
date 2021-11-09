@@ -4,7 +4,7 @@
   <mat-form-field>
          <textarea matInput
            name="name"
-           ngModel
+           [(ngModel)]="user!.name"
            required
            minlength="3"
            placeholder="Enter new name"
@@ -19,7 +19,7 @@
   <mat-form-field>
          <textarea matInput
            name="email"
-           ngModel
+           [(ngModel)]="user!.email"
            required
            email
            minlength="3"
@@ -34,7 +34,7 @@
   <mat-form-field>
          <textarea matInput
           name="username"
-          ngModel
+          [(ngModel)]="user!.username"
           required
           minlength="6"
           placeholder="Enter new username"

@@ -33,21 +33,20 @@ export class UsersComponent implements OnInit {
     if (data.form.invalid) {
       return
     }
+
     const user: Utilisateur = {
       id:data.id,
       name: data.form.value.name,
       username: data.form.value.username,
       email: data.form.value.email
     }
+    const index = this.users.findIndex(el => el.id === data.id)
       this.userService.updateUser(user).subscribe(
         user => {
-          this.users[user.id] = user;
+          this.users[index] = user;
         }
       )
-    this.userService.getUsers().subscribe(data => {
-      this.users = data;
-      console.log(data)
-    })
+
   }
 
     addUser(form: NgForm) {
