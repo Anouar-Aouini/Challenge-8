@@ -1,14 +1,13 @@
 <div class="container">
-<h1>List Of Users</h1>
-<mat-card>
-  <form (submit)="addUser(userForm)" #userForm="ngForm">
+  <mat-card *ngIf="edit">
+  <form (submit)="editUser(editForm,user!.id)" #editForm="ngForm">
   <mat-form-field>
          <textarea matInput
            name="name"
            ngModel
            required
            minlength="3"
-           placeholder="Enter name"
+           placeholder="Enter new name"
            #name="ngModel"
          ></textarea>
          <mat-error *ngIf="name.invalid && name.touched">
@@ -24,7 +23,7 @@
            required
            email
            minlength="3"
-           placeholder="Enter email"
+           placeholder="Enter new email"
            #email="ngModel"
          ></textarea>
           <mat-error *ngIf="email.invalid && email.touched">
@@ -38,7 +37,7 @@
           ngModel
           required
           minlength="6"
-          placeholder="Enter username"
+          placeholder="Enter new username"
           #username="ngModel"
          ></textarea>
           <mat-error *ngIf="username.invalid && username.touched">
@@ -49,15 +48,36 @@
 mat-raised-button
 color="accent"
 type="submit"
-[disabled]="userForm.invalid"
->Save</button>
+[disabled]="editForm.invalid"
+>Save edit</button>
+<button
+(click)="onHide()"
+mat-raised-button
+type="button"
+color="Warn"
+>
+  Hide
+</button>
 </form>
 </mat-card>
+<mat-accordion  *ngIf="!edit">
+  <mat-expansion-panel (opened)="panelOpenState = true" hideToggle
+    (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{user?.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{user?.username}}
+      </mat-panel-description>
+      <button mat-raised-button color="primary" class="center" (click)="showTem()">Edit</button>
+    </mat-expansion-panel-header>
+    <p>{{user?.email}}</p>
+        <div class="example-button-container" >
+        <button mat-fab color="warn" (click)="deleteUser(user!.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+  </mat-expansion-panel>
+</mat-accordion>
 </div>
-<h2 *ngIf="!users.length">There is no users</h2>
-<app-user
- *ngFor="let user of users;let i=index"
- [user]=user [users]=users
- (deleteEvent)="deleteUser($event)"
- (updateEvent)="updateUser($event)"
-></app-user>

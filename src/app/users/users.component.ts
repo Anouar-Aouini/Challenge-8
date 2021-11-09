@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService } from './../user.service';
 import { Utilisateur } from './users.module';
+import { UserComponent } from './../user/user.component';
 
 
 @Component({
@@ -10,25 +11,45 @@ import { Utilisateur } from './users.module';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+  @ViewChild(UserComponent, {static: false}) usersall?: UserComponent;
   public users: Utilisateur[] = []
   public edit = false;
-  public panelOpenState = false;
+
   constructor(private userService:UserService) { }
 
   ngOnInit(): void {
+    this.userService.getUsers().subscribe(data => {
+      this.users = data;
+    })
+  }
+  deleteUser(id:number) {
+      this.userService.deleteUser(id).subscribe(() => {
+      const updatedUsers = this.users?.filter(user => user.id !== id)
+      this.users = updatedUsers;
+     }
+     )
+  }
+  updateUser(data: { form: NgForm, id: number }) {
+    if (data.form.invalid) {
+      return
+    }
+    const user: Utilisateur = {
+      id:data.id,
+      name: data.form.value.name,
+      username: data.form.value.username,
+      email: data.form.value.email
+    }
+      this.userService.updateUser(user).subscribe(
+        user => {
+          this.users[user.id] = user;
+        }
+      )
     this.userService.getUsers().subscribe(data => {
       this.users = data;
       console.log(data)
     })
   }
 
-  deleteUser(id: number) {
-      this.userService.deleteUser(id).subscribe(() => {
-      const updatedUsers = this.users.filter(user => user.id !== id)
-      this.users = updatedUsers;
-    }
-    )
-  }
     addUser(form: NgForm) {
     if (form.invalid) {
       return
@@ -47,37 +68,6 @@ export class UsersComponent implements OnInit {
       )
 
     }
-  public ind = 0;
-  showTem(id: number) {
-    this.ind = id;
-    this.edit = true;
-    console.log(this.ind)
-  }
 
-  editUser(form:NgForm,id:number) {
-   if (form.invalid) {
-      return
-    }
-    const user: Utilisateur = {
-      id,
-      name: form.value.name,
-      username: form.value.username,
-      email: form.value.email
-    }
-      this.userService.updateUser(user).subscribe(
-        user => {
-          this.users[user.id] = user;
-          this.edit = false;
-
-      this.userService.getUsers().subscribe(data => {
-      this.users = data;
-      console.log(data)
-    })
-        }
-      )
-  }
-  onHide() {
-    this.edit = false;
-  }
 
 }
