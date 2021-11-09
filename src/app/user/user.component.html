@@ -2,14 +2,14 @@
   <mat-card *ngIf="edit">
   <form (submit)="editUser(editForm,user!.id)" #editForm="ngForm">
   <mat-form-field>
-         <textarea matInput
+         <input matInput
            name="name"
            [(ngModel)]="user!.name"
            required
            minlength="3"
            placeholder="Enter new name"
            #name="ngModel"
-         ></textarea>
+         />
          <mat-error *ngIf="name.invalid && name.touched">
            <mat-error *ngIf="name.errors?.required">Name is required</mat-error>
            <mat-error *ngIf="name.errors?.minlength">Name must contain 3 characters at least</mat-error>
@@ -17,7 +17,7 @@
 
 </mat-form-field>
   <mat-form-field>
-         <textarea matInput
+         <input matInput
            name="email"
            [(ngModel)]="user!.email"
            required
@@ -25,21 +25,21 @@
            minlength="3"
            placeholder="Enter new email"
            #email="ngModel"
-         ></textarea>
+         >
           <mat-error *ngIf="email.invalid && email.touched">
            <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
            <mat-error *ngIf="email.errors?.email">Email in not valid</mat-error>
          </mat-error>
 </mat-form-field>
   <mat-form-field>
-         <textarea matInput
+         <input matInput
           name="username"
           [(ngModel)]="user!.username"
           required
           minlength="6"
           placeholder="Enter new username"
           #username="ngModel"
-         ></textarea>
+         >
           <mat-error *ngIf="username.invalid && username.touched">
            <mat-error *ngIf="username.errors?.required">Username is required</mat-error>
            <mat-error *ngIf="username.errors?.minlength">Username must contain 6 characters at least</mat-error>

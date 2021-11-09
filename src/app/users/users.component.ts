@@ -11,7 +11,6 @@ import { UserComponent } from './../user/user.component';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  @ViewChild(UserComponent, {static: false}) usersall?: UserComponent;
   public users: Utilisateur[] = []
   public edit = false;
 
